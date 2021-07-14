@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Enemies;
+using UnityEngine;
 
 namespace Game.Combat
 {
@@ -6,6 +7,7 @@ namespace Game.Combat
     {
         //data
         [SerializeField] private float health = 50f;
+        [SerializeField] private HpBar hpBar;
         
         //components
         private Animator animator;
@@ -21,6 +23,7 @@ namespace Game.Combat
         private void DecreaseHealth(float healthAmount)
         {
             health -= healthAmount;
+            hpBar.UpdateBar(health);
 
             if (health <= 0)
             {
@@ -40,6 +43,11 @@ namespace Game.Combat
                 animator.SetTrigger("die");
                 BroadcastMessage("Death");
             }
+        }
+
+        public float GetHealth()
+        {
+            return health;
         }
         
     }

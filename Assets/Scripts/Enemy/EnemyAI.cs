@@ -17,22 +17,16 @@ namespace Game.Enemies
         [Header("Behaviour")]
         [SerializeField] private float chaseRange = 10f;
         [SerializeField] private float attackRange = 3f;
-        [SerializeField] private float chearRange = 10f;
+        [SerializeField] private float cheerRange = 10f;
         [SerializeField] private float callForBackupRange = 50f;
-        [SerializeField] private float stopAgroTime = 5f;
 
-        public GameObject placeholderPrefab;
-        private GameObject placeHolder;
-        
         //components
-        private NavMeshAgent navMeshAgent;
         private Fighter fighter;
         private EnemyMovement mover;
-        
+
         //state
         private bool isDead;
         private bool isAttacking;
-        private bool isChearing;
         private bool onTarget;
         
         //vars
@@ -43,8 +37,6 @@ namespace Game.Enemies
             fighter = GetComponent<Fighter>();
             mover = GetComponent<EnemyMovement>();
             layerMask = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));
-
-            placeHolder = Instantiate(placeholderPrefab, transform.position, Quaternion.identity);
         }
 
         private void Update()
@@ -66,8 +58,6 @@ namespace Game.Enemies
                     {
                         tracker.AddEnemy(gameObject);
                         isAttacking = true;
-                        isChearing = false;
-                        Destroy(placeHolder);
                     }
 
                     if (distanceFromTarget <= attackRange)
@@ -81,14 +71,13 @@ namespace Game.Enemies
                 }
                 else if (!tracker.CanAttack())
                 {
-                    if (Math.Abs(distanceFromTarget - chearRange) > 1)
+                    if (Math.Abs(distanceFromTarget - cheerRange) > 1)
                     {
-                        Vector3 newPos = transform.position + transform.forward * (distanceFromTarget - chearRange);
-                        placeHolder.transform.position = newPos;
+                        Vector3 newPos = transform.position + transform.forward * (distanceFromTarget - cheerRange);
 
                         string speed;
                         //gets speed
-                        if ((distanceFromTarget - chearRange) > 0)
+                        if ((distanceFromTarget - cheerRange) > 0)
                         {
                             speed = "run";
                         }
@@ -165,7 +154,6 @@ namespace Game.Enemies
         public void ResetAgro()
         {
             isAttacking = false;
-            isChearing = false;
             onTarget = false;
         }
 

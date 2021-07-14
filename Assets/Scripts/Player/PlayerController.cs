@@ -10,10 +10,20 @@ namespace RPG.Player
         private PlayerMovement playerMovement;
         private PlayerCombat playerCombat;
         
-        void Start()
+        //vars
+        private Transform target;
+        
+        private void Start()
         {
             playerCombat = GetComponent<PlayerCombat>();
             playerMovement = GetComponent<PlayerMovement>();
+        }
+
+        public void SetTarget(Transform localTarget)
+        {
+            target = localTarget;
+            Debug.Log(target);
+            target.GetComponent<Outline>().enabled = true;
         }
     
         //called by health when player dies
